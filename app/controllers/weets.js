@@ -1,14 +1,12 @@
-const quotesGardenService = require('../services/qoutes_garden');
+const quotesGardenService = require('../services/quotes_garden');
 
 const createWeet = async (req, res, next) => {
   try {
-    const response = await quotesGardenService.getRandomQuote();
-    res.json({ weet: response.data });
+    const result = await quotesGardenService.getRandomQuote();
+    res.json({ weet: result.data });
   } catch (error) {
     next(error);
   }
 };
 
-module.exports = {
-    createWeet
-};
+module.exports = { createWeet };
