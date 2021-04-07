@@ -1,6 +1,6 @@
 ## Summary
 
-![](https://github.trello.services/images/mini-trello-icon.png) `[<TITLE>](<long or short link to the trello card that is being developed>)`
+![](https://github.trello.services/images/mini-trello-icon.png) `[GetQuoteRandom](https://trello.com/c/vip1nkUs/32-servicios-promises-witter)`
 
 **Github Issue**: `#<number of issue that is being solved>`
 
