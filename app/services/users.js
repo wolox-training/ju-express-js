@@ -14,6 +14,19 @@ const createUser = async userData => {
   }
 };
 
+const getUserByEmail = async email => {
+  try {
+    logger.info(`users-service::getUserByEmail::email::${email}`);
+    const result = await User.findOne({ where: { email } });
+    return result;
+  } catch (error) {
+    logger.error(error);
+    logger.error(`users-service::getUserByEmail::error::${error}`);
+    throw errors.databaseError('Error getting user by email into DB');
+  }
+};
+
 module.exports = {
-  createUser
+  createUser,
+  getUserByEmail
 };
