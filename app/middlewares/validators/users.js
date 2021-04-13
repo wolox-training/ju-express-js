@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 const errors = require('../../errors');
 
-const errorMessages = error => ({
-  'any.required': `the field '${error.path[0]}' is required`,
-  'string.base': `the field '${error.path[0]}' must be a string'`
+const customErrorMessages = error => ({
+  'any.required': `field '${error.path[0]}' is required`,
+  'string.base': `field '${error.path[0]}' must be a string'`
 });
 
 const userSchema = Joi.object({
@@ -22,7 +22,7 @@ const userSchema = Joi.object({
   .required()
   .error(err =>
     err.map(error => {
-      const messages = errorMessages(error);
+      const messages = customErrorMessages(error);
       error.message = messages[error.code] || error.message;
       return error;
     })
