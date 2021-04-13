@@ -2,16 +2,12 @@ const UserService = require('../services/users');
 const logger = require('../logger/index');
 const utilities = require('../helpers/utilities');
 const errors = require('../errors');
+const { signUpMapper } = require('../mappers/users');
 
 const signUp = async (req, res, next) => {
   try {
     const { body } = req;
-    const userData = {
-      firstName: body.first_name,
-      lastName: body.last_name,
-      email: body.email,
-      password: body.password
-    };
+    const userData = signUpMapper(body);
 
     const userByEmail = await UserService.getUserByEmail(userData.email);
 

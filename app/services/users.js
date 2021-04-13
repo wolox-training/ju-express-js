@@ -20,7 +20,6 @@ const getUserByEmail = async email => {
     const result = await User.findOne({ where: { email } });
     return result;
   } catch (error) {
-    logger.error(error);
     logger.error(`users-service::getUserByEmail::error::${error}`);
     throw errors.databaseError('Error getting user by email into DB');
   }
