@@ -12,7 +12,7 @@ const signUp = async (req, res, next) => {
     const userByEmail = await UserService.getUserByEmail(userData.email);
 
     if (userByEmail) {
-      throw errors.defaultError('The user already exists');
+      throw errors.conflictError('The user already exists');
     }
 
     body.password = await utilities.encryptText(userData.password);
@@ -21,9 +21,7 @@ const signUp = async (req, res, next) => {
 
     logger.info(`User ${result.firstName} created succesfully`);
 
-    return res.status(201).send({
-      data: { name: userData.firstName }
-    });
+    return res.status(201).send({ name: userData.firstName });
   } catch (error) {
     logger.error(error);
     return next(error);
