@@ -13,7 +13,10 @@ const userSchema = Joi.object({
   email: Joi.string()
     .email()
     .regex(/^[a-zA-Z]+.[a-zA-Z]+@wolox.+((co)|(ar)|(mx))$/)
-    .required(),
+    .required()
+    .messages({
+      'string.pattern.base': 'email must be Wolox domain'
+    }),
   password: Joi.string()
     .alphanum()
     .min(8)
@@ -32,7 +35,7 @@ const validator = (req, res, next) => {
   try {
     const { error } = userSchema.validate(req.body);
     if (error) {
-      next(errors.badRequest(error.message));
+      next(errors.badRequestError(error.message));
     }
     next();
   } catch (error) {
