@@ -1,38 +1,56 @@
 module.exports = {
-  userId: {
-    type: 'integer',
-    example: 7
-  },
-  username: {
+  userFirstName: {
     type: 'string',
-    example: 'tom99'
+    example: 'Johnatan Alexis'
+  },
+  userLastName: {
+    type: 'string',
+    example: 'Urbano Guzmán'
   },
   userEmail: {
     type: 'string',
-    example: 'tom.engels@wolox.com.ar'
+    example: 'johnatan.urbano@wolox.com.co'
   },
-  User: {
+  userPassword: {
+    type: 'string',
+    example: '12345678'
+  },
+  userJsonCreate: {
     type: 'object',
     properties: {
-      id: {
-        $ref: '#/components/schemas/userId'
+      first_name: {
+        $ref: '#/components/schemas/userFirstName'
       },
-      username: {
-        $ref: '#/components/schemas/username'
+      last_name: {
+        $ref: '#/components/schemas/userLastName'
       },
       email: {
         $ref: '#/components/schemas/userEmail'
+      },
+      password: {
+        $ref: '#/components/schemas/userPassword'
       }
     }
   },
-  Users: {
+  userCreated: {
     type: 'object',
     properties: {
-      users: {
-        type: 'array',
-        items: {
-          $ref: '#/components/schemas/User'
-        }
+      name: {
+        type: 'string',
+        example: 'Johnatan Alexis'
+      }
+    }
+  },
+  userAlreadyExists: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: 'The user already exists'
+      },
+      internal_code: {
+        type: 'string',
+        example: 'conflict_error'
       }
     }
   }
