@@ -13,7 +13,7 @@ const userSchema = Joi.object({
     .regex(/^[a-zA-Z]+.[a-zA-Z]+@wolox.+((co)|(ar)|(mx))$/)
     .required()
     .messages({
-      'string.pattern.base': 'email must be Wolox domain'
+      'string.pattern.base': 'email must be a Wolox domain'
     }),
   password: Joi.string()
     .alphanum()
