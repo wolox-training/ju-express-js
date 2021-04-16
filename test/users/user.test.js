@@ -80,7 +80,7 @@ describe('POST /signup - Email is incorrect', () => {
   });
 
   it('Should return status code 400', () => {
-    expect(status).toBe(408);
+    expect(status).toBe(400);
   });
 
   it('Should return an internal code error', () => {
