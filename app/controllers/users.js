@@ -3,7 +3,7 @@ const logger = require('../logger/index');
 const utilities = require('../helpers/utilities');
 const errors = require('../errors');
 const { signUpMapper } = require('../mappers/users');
-const { signInSerializer } = require('../serializers/users');
+const { userObjectSerializer } = require('../serializers/users');
 
 const signUp = async (req, res, next) => {
   try {
@@ -45,7 +45,7 @@ const signIn = async (req, res, next) => {
       throw errors.unauthorizedError('The password is wrong');
     }
 
-    const userSerialized = signInSerializer(user);
+    const userSerialized = userObjectSerializer(user);
     const { token, expires } = utilities.generateToken(userSerialized);
 
     logger.info(`user with email ${user.email} has logged in successfully`);
@@ -57,7 +57,19 @@ const signIn = async (req, res, next) => {
   }
 };
 
+const getUsers = async (req, res, next) => {
+  try {
+    const { page, limit } = req.query;
+    const users = await UserService.getUsers(page, limit);
+    return res.status(200).send(users);
+  } catch (error) {
+    logger.error(`userController::getUsers::error::${error}`);
+    return next(error);
+  }
+};
+
 module.exports = {
   signUp,
-  signIn
+  signIn,
+  getUsers
 };

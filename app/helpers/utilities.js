@@ -42,3 +42,16 @@ exports.generateToken = data => {
     throw errors.defaultError('Error trying to generate token');
   }
 };
+
+exports.verifyToken = token => {
+  try {
+    logger.info(`utilities::verifyToken::token::${token}`);
+    logger.info(`utilities::verifyToken::secret::${secret}`);
+    const verifyToken = jwt.verify(token, secret);
+
+    return verifyToken;
+  } catch (error) {
+    logger.error(error);
+    throw errors.defaultError('Error trying to verifyToken token');
+  }
+};

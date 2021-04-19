@@ -1,4 +1,5 @@
 const { userSignUpSchema, userSignInSchema } = require('../schemas/users');
+const utilities = require('../../helpers/utilities');
 
 const errors = require('../../errors');
 
@@ -26,7 +27,23 @@ const signInValidator = (req, res, next) => {
   }
 };
 
+const validateToken = (req, res, next) => {
+  try {
+    const token = req.headers.authorization;
+
+    if (!token) {
+      return next(errors.unauthorizedError('Missing token'));
+    }
+
+    req.token = utilities.verifyToken(token);
+    return next();
+  } catch (error) {
+    return next(errors.unauthorizedError('Invalid token'));
+  }
+};
+
 module.exports = {
   signUpValidator,
-  signInValidator
+  signInValidator,
+  validateToken
 };

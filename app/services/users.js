@@ -1,6 +1,7 @@
 const { User } = require('../models');
 const logger = require('../logger');
 const errors = require('../errors');
+const { userObjectSerializer } = require('../serializers/users');
 
 const createUser = async userData => {
   try {
@@ -25,7 +26,22 @@ const getUserByEmail = async email => {
   }
 };
 
+const getUsers = async (page, limit) => {
+  try {
+    let offset = 0;
+    offset += (page - 1) * limit;
+    const users = await User.findAll({ offset, limit });
+
+    const response = await users.map(user => userObjectSerializer(user));
+    return response;
+  } catch (error) {
+    logger.error(error);
+    throw errors.databaseError('Error trying to get user data from the DB');
+  }
+};
+
 module.exports = {
   createUser,
-  getUserByEmail
+  getUserByEmail,
+  getUsers
 };

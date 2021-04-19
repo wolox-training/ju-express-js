@@ -1,10 +1,8 @@
-const signInSerializer = user => ({
-  id: user.id,
-  first_name: user.firstName,
-  last_name: user.lastName,
-  email: user.email
-});
+const userObjectSerializer = user => {
+  const { id, firstName, lastName, email } = user;
+  return { id, first_name: firstName, last_name: lastName, email };
+};
 
 module.exports = {
-  signInSerializer
+  userObjectSerializer
 };
