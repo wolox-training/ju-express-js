@@ -39,9 +39,9 @@ const signIn = async (req, res, next) => {
       throw errors.unauthorizedError(`The user ${email} is wrong`);
     }
 
-    const isThesamePassword = await utilities.compareEncryptText(password, user.password);
+    const isTheSamePassword = await utilities.compareEncryptText(password, user.password);
 
-    if (!isThesamePassword) {
+    if (!isTheSamePassword) {
       throw errors.unauthorizedError('The password is wrong');
     }
 

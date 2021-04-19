@@ -18,15 +18,15 @@ exports.encryptText = async textToEncrypt => {
   }
 };
 
-exports.compareEncryptText = async (textSentTocompare, textEncrypted) => {
+exports.compareEncryptText = async (textSentToCompare, textEncrypted) => {
   try {
-    logger.info(`utilities::compareEncryptText::textSentTocompare::${textSentTocompare}`);
+    logger.info(`utilities::compareEncryptText::textSentTocompare::${textSentToCompare}`);
     logger.info(`utilities::compareEncryptText::textEncrypted::${textEncrypted}`);
-    const isThesameText = await bcrypt.compare(textSentTocompare, textEncrypted);
+    const isTheSameText = await bcrypt.compare(textSentToCompare, textEncrypted);
 
-    return isThesameText;
+    return isTheSameText;
   } catch (error) {
-    logger.error(error);
+    logger.error(JSON.stringify(error));
     throw errors.defaultError('Error trying to compare encrypted text');
   }
 };
@@ -38,7 +38,7 @@ exports.generateToken = data => {
 
     return { token, expires: TOKEN_JWT_EXPIRES };
   } catch (error) {
-    logger.error(error);
+    logger.error(JSON.stringify(error));
     throw errors.defaultError('Error trying to generate token');
   }
 };
