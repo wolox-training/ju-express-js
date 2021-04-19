@@ -1,7 +1,7 @@
 const userData = {
   first_name: 'Johnatan Alexis',
   last_name: 'Urbano Guzmán',
-  email: 'johnatan.urbano@wolox.co',
+  email: 'johnatan.urbano@wolox.com.co',
   password: '123456789'
 };
 
@@ -15,26 +15,26 @@ const userDataEmailIncorrect = {
 const userPasswordIncomplete = {
   first_name: 'Johnatan Alexis',
   last_name: 'Urbano Guzmán',
-  email: 'johnatan.urbano@wolox.co',
+  email: 'johnatan.urbano@wolox.com.co',
   password: '12345'
 };
 
 const userPasswordINotAlphanumeric = {
   first_name: 'Johnatan Alexis',
   last_name: 'Urbano Guzmán',
-  email: 'johnatan.urbano@wolox.co',
+  email: 'johnatan.urbano@wolox.com.co',
   password: '@12345'
 };
 
 const userDataMissingFieldFirstName = {
   last_name: 'Urbano Guzmán',
-  email: 'johnatan.urbano@wolox.co',
+  email: 'johnatan.urbano@wolox.com.co',
   password: '123456789'
 };
 
 const userDataMissingFieldLastName = {
   first_name: 'Johnatan Alexis',
-  email: 'johnatan.urbano@wolox.co',
+  email: 'johnatan.urbano@wolox.com.co',
   password: '123456789'
 };
 
@@ -47,7 +47,30 @@ const userDataMissingFieldEmail = {
 const userDataMissingFieldPassword = {
   first_name: 'Johnatan Alexis',
   last_name: 'Urbano Guzmán',
-  email: 'johnatan.urbano@wolox.co'
+  email: 'johnatan.urbano@wolox.com.co'
+};
+
+const userDataAuthorized = {
+  email: 'johnatan.urbano@wolox.com.co',
+  password: '123456789'
+};
+
+const userDataUnauthorizedEmail = {
+  email: 'johnata.urbano@wolox.com.co',
+  password: '123456789'
+};
+
+const userDataUnauthorizedPassword = {
+  email: 'johnatan.urbano@wolox.com.co',
+  password: 'badpassword'
+};
+
+const userSignInMissingEmail = {
+  password: '123456789'
+};
+
+const userSignInMissingPassword = {
+  email: 'johnatan.urbano@wolox.com.co'
 };
 
 module.exports = {
@@ -58,5 +81,10 @@ module.exports = {
   userDataMissingFieldFirstName,
   userDataMissingFieldLastName,
   userDataMissingFieldEmail,
-  userDataMissingFieldPassword
+  userDataMissingFieldPassword,
+  userDataAuthorized,
+  userDataUnauthorizedEmail,
+  userDataUnauthorizedPassword,
+  userSignInMissingEmail,
+  userSignInMissingPassword
 };
