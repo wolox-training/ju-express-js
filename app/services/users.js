@@ -1,7 +1,8 @@
 const { User } = require('../models');
 const logger = require('../logger');
 const errors = require('../errors');
-const { userObjectSerializer } = require('../serializers/users');
+
+const { DEFAULT_LIMIT, DEFAULT_OFFSET } = require('../helpers/constants');
 
 const createUser = async userData => {
   try {
@@ -26,13 +27,15 @@ const getUserByEmail = async email => {
   }
 };
 
-const getUsers = async (page, limit) => {
+const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
   try {
-    let offset = 0;
-    offset += (page - 1) * limit;
-    const users = await User.findAll({ offset, limit });
-
-    const response = await users.map(user => userObjectSerializer(user));
+    logger.info(`usersController::getUsers::offset::${offset}`);
+    logger.info(`usersController::getUsers::limit::${limit}`);
+    const response = await User.findAndCountAll({
+      offset,
+      limit,
+      attributes: ['id', 'firstName', 'lastName', 'email']
+    });
     return response;
   } catch (error) {
     logger.error(error);

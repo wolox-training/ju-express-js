@@ -5,6 +5,15 @@ const errors = require('../errors');
 const { signUpMapper } = require('../mappers/users');
 const { userObjectSerializer } = require('../serializers/users');
 
+const getPagingData = (data, limit) => {
+  const { count, rows: usersData } = data;
+
+  const users = usersData.map(user => userObjectSerializer(user));
+  const totalPages = Math.ceil(count / limit);
+
+  return { count, users, totalPages };
+};
+
 const signUp = async (req, res, next) => {
   try {
     const { body } = req;
@@ -39,9 +48,9 @@ const signIn = async (req, res, next) => {
       throw errors.unauthorizedError(`The user ${email} is wrong`);
     }
 
-    const isThesamePassword = await utilities.compareEncryptText(password, user.password);
+    const isTheSamePassword = await utilities.compareEncryptText(password, user.password);
 
-    if (!isThesamePassword) {
+    if (!isTheSamePassword) {
       throw errors.unauthorizedError('The password is wrong');
     }
 
@@ -50,7 +59,7 @@ const signIn = async (req, res, next) => {
 
     logger.info(`user with email ${user.email} has logged in successfully`);
 
-    return res.status(201).send({ token, expires });
+    return res.status(200).send({ token, expires });
   } catch (error) {
     logger.error(`userController::signIn::error::${error}`);
     return next(error);
@@ -59,8 +68,9 @@ const signIn = async (req, res, next) => {
 
 const getUsers = async (req, res, next) => {
   try {
-    const { page, limit } = req.query;
-    const users = await UserService.getUsers(page, limit);
+    const { offset, limit } = req.query;
+    let users = await UserService.getUsers(limit, offset);
+    users = getPagingData(users, limit);
     return res.status(200).send(users);
   } catch (error) {
     logger.error(`userController::getUsers::error::${error}`);

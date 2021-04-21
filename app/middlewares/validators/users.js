@@ -1,4 +1,4 @@
-const { userSignUpSchema, userSignInSchema } = require('../schemas/users');
+const { userSignUpSchema, userSignInSchema, usersGetAllSchema } = require('../schemas/users');
 const utilities = require('../../helpers/utilities');
 
 const errors = require('../../errors');
@@ -42,8 +42,21 @@ const validateToken = (req, res, next) => {
   }
 };
 
+const usersGetAllValidator = (req, res, next) => {
+  try {
+    const { error } = usersGetAllSchema.validate(req.query);
+    if (error) {
+      next(errors.badRequestError(error.message));
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   signUpValidator,
   signInValidator,
-  validateToken
+  validateToken,
+  usersGetAllValidator
 };

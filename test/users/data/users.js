@@ -73,6 +73,27 @@ const userSignInMissingPassword = {
   email: 'johnatan.urbano@wolox.com.co'
 };
 
+const usersToInsert = [
+  {
+    first_name: 'nombre uno',
+    last_name: 'apellido uno',
+    email: 'johnatan.urbano@wolox.com.co',
+    password: '123456789'
+  },
+  {
+    first_name: 'nombre dos',
+    last_name: 'apellido dos',
+    email: 'nombre.dos@wolox.com.co',
+    password: '123456789'
+  },
+  {
+    first_name: 'nombre tres',
+    last_name: 'apellido tres',
+    email: 'nombre.tres@wolox.com.co',
+    password: '123456789'
+  }
+];
+
 module.exports = {
   userData,
   userDataEmailIncorrect,
@@ -86,5 +107,6 @@ module.exports = {
   userDataUnauthorizedEmail,
   userDataUnauthorizedPassword,
   userSignInMissingEmail,
-  userSignInMissingPassword
+  userSignInMissingPassword,
+  usersToInsert
 };

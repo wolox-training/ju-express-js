@@ -78,5 +78,32 @@ module.exports = {
         }
       }
     }
+  },
+  '/users': {
+    get: {
+      tags: ['User operations'],
+      description: 'Get all users',
+      operationId: 'getAllUsers',
+      parameters: [
+        {
+          $ref: '#/components/schemas/limit'
+        },
+        {
+          $ref: '#/components/schemas/offset'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Users data successful',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/getAllUsersData'
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };
