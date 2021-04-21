@@ -1,4 +1,4 @@
-const UserService = require('../services/users');
+const userService = require('../services/users');
 const logger = require('../logger/index');
 const utilities = require('../helpers/utilities');
 const errors = require('../errors');
@@ -19,7 +19,7 @@ const signUp = async (req, res, next) => {
     const { body } = req;
     const userData = signUpMapper(body);
 
-    const userByEmail = await UserService.getUserByEmail(userData.email);
+    const userByEmail = await userService.getUserByEmail(userData.email);
 
     if (userByEmail) {
       throw errors.conflictError('The user already exists');
@@ -27,7 +27,7 @@ const signUp = async (req, res, next) => {
 
     userData.password = await utilities.encryptText(userData.password);
 
-    const result = await UserService.createUser(userData);
+    const result = await userService.createUser(userData);
 
     logger.info(`User ${result.firstName} created succesfully`);
 
@@ -42,7 +42,7 @@ const signIn = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await UserService.getUserByEmail(email);
+    const user = await userService.getUserByEmail(email);
 
     if (!user) {
       throw errors.unauthorizedError(`The user ${email} is wrong`);
@@ -69,7 +69,7 @@ const signIn = async (req, res, next) => {
 const getUsers = async (req, res, next) => {
   try {
     const { offset, limit } = req.query;
-    let users = await UserService.getUsers(limit, offset);
+    let users = await userService.getUsers(limit, offset);
     users = getPagingData(users, limit);
     return res.status(200).send(users);
   } catch (error) {

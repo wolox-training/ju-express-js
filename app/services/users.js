@@ -29,8 +29,7 @@ const getUserByEmail = async email => {
 
 const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
   try {
-    logger.info(`usersController::getUsers::offset::${offset}`);
-    logger.info(`usersController::getUsers::limit::${limit}`);
+    logger.info(`usersController::getUsers::limit::${limit}::offset::${offset}`);
     const response = await User.findAndCountAll({
       offset,
       limit,
