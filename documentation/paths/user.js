@@ -35,13 +35,43 @@ module.exports = {
               }
             }
           }
+        }
+      }
+    }
+  },
+  '/signin': {
+    post: {
+      tags: ['User operations'],
+      description: 'Login user',
+      operationId: 'signin',
+      parameters: [],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/userJsonLogin'
+            }
+          }
         },
-        400: {
-          description: 'Invalid parameters',
+        required: true
+      },
+      responses: {
+        201: {
+          description: 'User logged successfully',
           content: {
             'application/json': {
               schema: {
-                $ref: '#/components/schemas/userAlreadyExists'
+                $ref: '#/components/schemas/userLoginSuccessful'
+              }
+            }
+          }
+        },
+        401: {
+          description: 'User does not exists',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/userNotExists'
               }
             }
           }

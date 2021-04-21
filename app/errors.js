@@ -17,3 +17,6 @@ exports.badRequestError = message => internalError(message, exports.BAD_REQUEST_
 
 exports.CONFLICT_ERROR = 'conflict_error';
 exports.conflictError = message => internalError(message, exports.CONFLICT_ERROR);
+
+exports.UNAUTHORIZED_ERROR = 'unauthorized_error';
+exports.unauthorizedError = message => internalError(message, exports.UNAUTHORIZED_ERROR);

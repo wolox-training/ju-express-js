@@ -1,10 +1,22 @@
-const { userSchema } = require('../schemas/users');
+const { userSignUpSchema, userSignInSchema } = require('../schemas/users');
 
 const errors = require('../../errors');
 
-const validator = (req, res, next) => {
+const signUpValidator = (req, res, next) => {
   try {
-    const { error } = userSchema.validate(req.body);
+    const { error } = userSignUpSchema.validate(req.body);
+    if (error) {
+      next(errors.badRequestError(error.message));
+    }
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
+const signInValidator = (req, res, next) => {
+  try {
+    const { error } = userSignInSchema.validate(req.body);
     if (error) {
       next(errors.badRequestError(error.message));
     }
@@ -15,5 +27,6 @@ const validator = (req, res, next) => {
 };
 
 module.exports = {
-  validator
+  signUpValidator,
+  signInValidator
 };
