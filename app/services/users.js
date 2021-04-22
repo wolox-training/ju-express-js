@@ -37,7 +37,6 @@ const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
     });
     return response;
   } catch (error) {
-    logger.error(`users-service::getUsers::error::${error}`);
     throw errors.databaseError('Error trying to get user data from the DB');
   }
 };
