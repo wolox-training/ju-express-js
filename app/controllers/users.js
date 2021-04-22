@@ -4,6 +4,8 @@ const utilities = require('../helpers/utilities');
 const errors = require('../errors');
 const { signUpMapper } = require('../mappers/users');
 const { userObjectSerializer } = require('../serializers/users');
+const { USER_ROLE } = require('../helpers/constants');
+const userInteractor = require('../interactors/users');
 
 const getPagingData = (data, limit) => {
   const { count, rows: usersData } = data;
@@ -26,6 +28,7 @@ const signUp = async (req, res, next) => {
     }
 
     userData.password = await utilities.encryptText(userData.password);
+    userData.role = USER_ROLE.REGULAR;
 
     const result = await userService.createUser(userData);
 
@@ -74,6 +77,31 @@ const getUsers = async (req, res, next) => {
     return res.status(200).send(users);
   } catch (error) {
     logger.error(`userController::getUsers::error::${error}`);
+    return next(error);
+  }
+};
+
+const signUpAdmin = async (req, res, next) => {
+  try {
+    const { body } = req;
+    const userData = signUpMapper(body);
+
+    const userByEmail = await userService.getUserByEmail(userData.email);
+
+    if (userByEmail) {
+      userData = userByEmail;
+    }
+
+    userData.password = await utilities.encryptText(userData.password);
+    userData.role = USER_ROLE.ADMIN;
+
+    const result = await userInteractor.createUserAdmin(userData);
+
+    logger.info(`User ${result.firstName} created succesfully`);
+
+    return res.status(201).send({ name: userData.firstName });
+  } catch (error) {
+    logger.error(`userController::signUp::error::${error}`);
     return next(error);
   }
 };
