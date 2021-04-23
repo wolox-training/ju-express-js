@@ -27,8 +27,8 @@ describe('POST /signin user get authorization token', () => {
     } = result);
   }, 10000);
 
-  it('Should return status code 201', () => {
-    expect(status).toBe(201);
+  it('Should return status code 200', () => {
+    expect(status).toBe(200);
   });
 
   it('Should return property token', () => {

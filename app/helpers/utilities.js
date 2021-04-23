@@ -13,7 +13,7 @@ exports.encryptText = async textToEncrypt => {
 
     return encryptedText;
   } catch (error) {
-    logger.error(error);
+    logger.error(`utilities::encryptText::error::${error.message}`);
     throw errors.defaultError('Error trying to encrypt text');
   }
 };
@@ -26,7 +26,7 @@ exports.compareEncryptText = async (textSentToCompare, textEncrypted) => {
 
     return isTheSameText;
   } catch (error) {
-    logger.error(JSON.stringify(error));
+    logger.error(`utilities::compareEncryptText::error::${error.message}`);
     throw errors.defaultError('Error trying to compare encrypted text');
   }
 };
@@ -38,7 +38,20 @@ exports.generateToken = data => {
 
     return { token, expires: TOKEN_JWT_EXPIRES };
   } catch (error) {
-    logger.error(JSON.stringify(error));
+    logger.error(`utilities::generateToken::error::${error.message}`);
     throw errors.defaultError('Error trying to generate token');
+  }
+};
+
+exports.verifyToken = token => {
+  try {
+    logger.info(`utilities::verifyToken::token::${token}`);
+    const tokenToVerify = token.split(' ')[1];
+    const verifyToken = jwt.verify(tokenToVerify, secret);
+
+    return verifyToken;
+  } catch (error) {
+    logger.error(`utilities::verifyToken::error::${error.message}`);
+    throw errors.defaultError('Error trying to verifyToken token');
   }
 };

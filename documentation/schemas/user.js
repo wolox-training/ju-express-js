@@ -1,4 +1,8 @@
 module.exports = {
+  userId: {
+    type: 'number',
+    example: 1
+  },
   userFirstName: {
     type: 'string',
     example: 'Johnatan Alexis'
@@ -89,6 +93,37 @@ module.exports = {
       internal_code: {
         type: 'string',
         example: 'unauthorized_error'
+      }
+    }
+  },
+  getAllUsersData: {
+    type: 'object',
+    properties: {
+      count: {
+        $ref: '#/components/schemas/countPaginator'
+      },
+      users: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            id: {
+              $ref: '#/components/schemas/userId'
+            },
+            first_name: {
+              $ref: '#/components/schemas/userFirstName'
+            },
+            last_name: {
+              $ref: '#/components/schemas/userLastName'
+            },
+            email: {
+              $ref: '#/components/schemas/userEmail'
+            }
+          }
+        }
+      },
+      totalPages: {
+        $ref: '#/components/schemas/totalPages'
       }
     }
   }
