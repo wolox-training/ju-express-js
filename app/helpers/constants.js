@@ -4,7 +4,7 @@ const DEFAULT_OFFSET = 0;
 const USER_ROLE = {
   ADMIN: 'admin',
   REGULAR: 'regular'
-}
+};
 
 module.exports = {
   TOKEN_JWT_EXPIRES,

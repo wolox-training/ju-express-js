@@ -10,7 +10,7 @@ const getRandomQuote = async () => {
     const { data } = result;
     return data;
   } catch (error) {
-    logger.error(`quotes_garden::getRandomQuote::error::${error}`);
+    logger.error(`quotes_garden::getRandomQuote::error::${error.message}`);
     throw errors.apiError('Error getting data from api');
   }
 };

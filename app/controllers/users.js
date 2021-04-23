@@ -5,7 +5,6 @@ const errors = require('../errors');
 const { signUpMapper } = require('../mappers/users');
 const { userObjectSerializer } = require('../serializers/users');
 const { USER_ROLE } = require('../helpers/constants');
-const userInteractor = require('../interactors/users');
 
 const getPagingData = (data, limit) => {
   const { count, rows: usersData } = data;
@@ -36,7 +35,7 @@ const signUp = async (req, res, next) => {
 
     return res.status(201).send({ name: userData.firstName });
   } catch (error) {
-    logger.error(`userController::signUp::error::${error}`);
+    logger.error(`userController::signUp::error::${error.message}`);
     return next(error);
   }
 };
@@ -64,7 +63,7 @@ const signIn = async (req, res, next) => {
 
     return res.status(200).send({ token, expires });
   } catch (error) {
-    logger.error(`userController::signIn::error::${error}`);
+    logger.error(`userController::signIn::error::${error.message}`);
     return next(error);
   }
 };
@@ -76,32 +75,36 @@ const getUsers = async (req, res, next) => {
     users = getPagingData(users, limit);
     return res.status(200).send(users);
   } catch (error) {
-    logger.error(`userController::getUsers::error::${error}`);
+    logger.error(`userController::getUsers::error::${error.message}`);
     return next(error);
   }
 };
 
 const signUpAdmin = async (req, res, next) => {
   try {
-    const { body } = req;
+    const { body, token } = req;
     const userData = signUpMapper(body);
+
+    if (token.role !== USER_ROLE.ADMIN) {
+      throw errors.unauthorizedError('Only user admin can create admin user');
+    }
 
     const userByEmail = await userService.getUserByEmail(userData.email);
 
-    if (userByEmail) {
-      userData = userByEmail;
+    if (userByEmail && userByEmail.role === USER_ROLE.ADMIN) {
+      throw errors.conflictError('The user admin already exists');
     }
 
     userData.password = await utilities.encryptText(userData.password);
     userData.role = USER_ROLE.ADMIN;
 
-    const result = await userInteractor.createUserAdmin(userData);
+    const result = await userService.createUserAdmin(userData);
 
-    logger.info(`User ${result.firstName} created succesfully`);
+    logger.info(`User admin ${result.firstName} created succesfully`);
 
     return res.status(201).send({ name: userData.firstName });
   } catch (error) {
-    logger.error(`userController::signUp::error::${error}`);
+    logger.error(`userController::signUpAdmin::error::${error.message}`);
     return next(error);
   }
 };
@@ -109,5 +112,6 @@ const signUpAdmin = async (req, res, next) => {
 module.exports = {
   signUp,
   signIn,
-  getUsers
+  getUsers,
+  signUpAdmin
 };
