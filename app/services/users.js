@@ -6,12 +6,11 @@ const { DEFAULT_LIMIT, DEFAULT_OFFSET } = require('../helpers/constants');
 
 const createUser = async userData => {
   try {
-    logger.info(`users-service::create::userData::${JSON.stringify(userData)}`);
+    logger.info(`users-service::createUser::userData::${JSON.stringify(userData)}`);
     const result = await User.create(userData);
     return result;
   } catch (error) {
-    logger.error(error);
-    logger.error(`users-service::create::error::${error}`);
+    logger.error(`users-service::createUser::error::${error.message}`);
     throw errors.databaseError('Error creating user into DB');
   }
 };
@@ -22,14 +21,14 @@ const getUserByEmail = async email => {
     const result = await User.findOne({ where: { email } });
     return result;
   } catch (error) {
-    logger.error(`users-service::getUserByEmail::error::${error}`);
+    logger.error(`users-service::getUserByEmail::error::${error.message}`);
     throw errors.databaseError('Error getting user by email into DB');
   }
 };
 
 const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
   try {
-    logger.info(`usersController::getUsers::limit::${limit}::offset::${offset}`);
+    logger.info(`users-service::getUsers::limit::${limit}::offset::${offset}`);
     const response = await User.findAndCountAll({
       offset,
       limit,
@@ -37,6 +36,7 @@ const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
     });
     return response;
   } catch (error) {
+    logger.error(`users-service::getUsers::error::${error.message}`);
     throw errors.databaseError('Error trying to get user data from the DB');
   }
 };

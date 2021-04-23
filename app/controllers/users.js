@@ -33,7 +33,7 @@ const signUp = async (req, res, next) => {
 
     return res.status(201).send({ name: userData.firstName });
   } catch (error) {
-    logger.error(`userController::signUp::error::${error}`);
+    logger.error(`userController::signUp::error::${error.message}`);
     return next(error);
   }
 };
@@ -61,7 +61,7 @@ const signIn = async (req, res, next) => {
 
     return res.status(200).send({ token, expires });
   } catch (error) {
-    logger.error(`userController::signIn::error::${error}`);
+    logger.error(`userController::signIn::error::${error.message}`);
     return next(error);
   }
 };
@@ -73,7 +73,7 @@ const getUsers = async (req, res, next) => {
     users = getPagingData(users, limit);
     return res.status(200).send(users);
   } catch (error) {
-    logger.error(`userController::getUsers::error::${error}`);
+    logger.error(`userController::getUsers::error::${error.message}`);
     return next(error);
   }
 };
