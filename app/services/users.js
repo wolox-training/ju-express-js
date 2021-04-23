@@ -28,7 +28,7 @@ const getUserByEmail = async email => {
 
 const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
   try {
-    logger.info(`usersController::getUsers::limit::${limit}::offset::${offset}`);
+    logger.info(`users-service::getUsers::limit::${limit}::offset::${offset}`);
     const response = await User.findAndCountAll({
       offset,
       limit,
@@ -43,11 +43,11 @@ const getUsers = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
 
 const createUserAdmin = async userData => {
   try {
-    logger.info(`users-service::updateUser::userData::${JSON.stringify(userData)}`);
+    logger.info(`users-service::createUserAdmin::userData::${JSON.stringify(userData)}`);
     const result = await User.upsert(userData, { returning: true });
     return result[0];
   } catch (error) {
-    logger.error(`users-service::updateUser::error::${error.message}`);
+    logger.error(`users-service::createUserAdmin::error::${error.message}`);
     throw errors.databaseError('Error creating user admin into DB', error.message);
   }
 };

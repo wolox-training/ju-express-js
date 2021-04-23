@@ -5,12 +5,12 @@ const errors = require('../errors');
 
 const getRandomQuote = async () => {
   try {
-    logger.info('quotes_garden::getRandomQuote');
+    logger.info('quotes_garden-service::getRandomQuote');
     const result = await axios.get(config.common.quoteGardenEndpointsApi.getRandomQuote);
     const { data } = result;
     return data;
   } catch (error) {
-    logger.error(`quotes_garden::getRandomQuote::error::${error.message}`);
+    logger.error(`quotes_garden-service::getRandomQuote::error::${error.message}`);
     throw errors.apiError('Error getting data from api');
   }
 };
