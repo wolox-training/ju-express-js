@@ -35,7 +35,7 @@ const signUp = async (req, res, next) => {
 
     return res.status(201).send({ name: userData.firstName });
   } catch (error) {
-    logger.error(`user-controller::signUp::error::${error.message}`);
+    logger.error(`users-controller::signUp::error::${error.message}`);
     return next(error);
   }
 };
@@ -63,7 +63,7 @@ const signIn = async (req, res, next) => {
 
     return res.status(200).send({ token, expires });
   } catch (error) {
-    logger.error(`user-controller::signIn::error::${error.message}`);
+    logger.error(`users-controller::signIn::error::${error.message}`);
     return next(error);
   }
 };
@@ -75,7 +75,7 @@ const getUsers = async (req, res, next) => {
     users = getPagingData(users, limit);
     return res.status(200).send(users);
   } catch (error) {
-    logger.error(`user-controller::getUsers::error::${error.message}`);
+    logger.error(`users-controller::getUsers::error::${error.message}`);
     return next(error);
   }
 };
@@ -104,7 +104,7 @@ const signUpAdmin = async (req, res, next) => {
 
     return res.status(201).send({ name: userData.firstName });
   } catch (error) {
-    logger.error(`user-controller::signUpAdmin::error::${error.message}`);
+    logger.error(`users-controller::signUpAdmin::error::${error.message}`);
     return next(error);
   }
 };
