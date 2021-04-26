@@ -94,6 +94,20 @@ const usersToInsert = [
   }
 ];
 
+const userAdminData = {
+  first_name: 'Johnatan Alexis',
+  last_name: 'Urbano Guzmán',
+  email: 'johnatan.urbano@wolox.com.co',
+  password: '123456789'
+};
+
+const userAdminDataToCreate = {
+  first_name: 'Admin',
+  last_name: 'Admin',
+  email: 'admin@wolox.com.co',
+  password: '123456789'
+};
+
 module.exports = {
   userData,
   userDataEmailIncorrect,
@@ -108,5 +122,7 @@ module.exports = {
   userDataUnauthorizedPassword,
   userSignInMissingEmail,
   userSignInMissingPassword,
-  usersToInsert
+  usersToInsert,
+  userAdminData,
+  userAdminDataToCreate
 };

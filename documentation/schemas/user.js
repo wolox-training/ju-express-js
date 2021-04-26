@@ -126,5 +126,31 @@ module.exports = {
         $ref: '#/components/schemas/totalPages'
       }
     }
+  },
+  userCantCreateAdmin: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: 'Only user admin can create admin user'
+      },
+      internal_code: {
+        type: 'string',
+        example: 'unauthorized_error'
+      }
+    }
+  },
+  userAdminAlreadyExists: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: 'The user admin already exists'
+      },
+      internal_code: {
+        type: 'string',
+        example: 'conflict_error'
+      }
+    }
   }
 };

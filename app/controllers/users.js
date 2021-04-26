@@ -4,6 +4,7 @@ const utilities = require('../helpers/utilities');
 const errors = require('../errors');
 const { signUpMapper } = require('../mappers/users');
 const { userObjectSerializer } = require('../serializers/users');
+const { USER_ROLE } = require('../helpers/constants');
 
 const getPagingData = (data, limit) => {
   const { count, rows: usersData } = data;
@@ -26,6 +27,7 @@ const signUp = async (req, res, next) => {
     }
 
     userData.password = await utilities.encryptText(userData.password);
+    userData.role = USER_ROLE.REGULAR;
 
     const result = await userService.createUser(userData);
 
@@ -78,8 +80,38 @@ const getUsers = async (req, res, next) => {
   }
 };
 
+const signUpAdmin = async (req, res, next) => {
+  try {
+    const { body, token } = req;
+    const userData = signUpMapper(body);
+
+    if (token.role !== USER_ROLE.ADMIN) {
+      throw errors.unauthorizedError('Only user admin can create admin user');
+    }
+
+    const userByEmail = await userService.getUserByEmail(userData.email);
+
+    if (userByEmail && userByEmail.role === USER_ROLE.ADMIN) {
+      throw errors.conflictError('The user admin already exists');
+    }
+
+    userData.password = await utilities.encryptText(userData.password);
+    userData.role = USER_ROLE.ADMIN;
+
+    const result = await userService.createUserAdmin(userData);
+
+    logger.info(`User admin ${result.firstName} created succesfully`);
+
+    return res.status(201).send({ name: userData.firstName });
+  } catch (error) {
+    logger.error(`users-controller::signUpAdmin::error::${error.message}`);
+    return next(error);
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
-  getUsers
+  getUsers,
+  signUpAdmin
 };

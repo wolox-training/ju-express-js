@@ -14,7 +14,8 @@ exports.init = app => {
   app.get('/weet', [], weetsController.createWeet);
   app.post('/signup', signUpValidator, userController.signUp);
   app.post('/signin', signInValidator, userController.signIn);
-  app.get('/users', [validateToken, usersGetAllValidator], userController.getUsers);
+  app.get('/users', [usersGetAllValidator, validateToken], userController.getUsers);
+  app.post('/admin/users', [signUpValidator, validateToken], userController.signUpAdmin);
   // app.put('/endpoint/put/path', [], controller.methodPUT);
   // app.post('/endpoint/post/path', [], controller.methodPOST);
 };

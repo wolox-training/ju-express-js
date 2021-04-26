@@ -105,5 +105,55 @@ module.exports = {
         }
       }
     }
+  },
+  '/admin/users': {
+    post: {
+      tags: ['User operations'],
+      description: 'Create user admin',
+      operationId: 'adminUsers',
+      parameters: [],
+      requestBody: {
+        content: {
+          'application/json': {
+            schema: {
+              $ref: '#/components/schemas/userJsonCreate'
+            }
+          }
+        },
+        required: true
+      },
+      responses: {
+        201: {
+          description: 'New user admin was created',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/userCreated'
+              }
+            }
+          }
+        },
+        401: {
+          description: 'User unauthorized to create user admin',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/userCantCreateAdmin'
+              }
+            }
+          }
+        },
+        409: {
+          description: 'User admin already exists',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/userAdminAlreadyExists'
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };
