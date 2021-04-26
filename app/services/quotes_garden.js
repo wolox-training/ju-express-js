@@ -7,8 +7,12 @@ const getRandomQuote = async () => {
   try {
     logger.info('quotes_garden-service::getRandomQuote');
     const result = await axios.get(config.common.quoteGardenEndpointsApi.getRandomQuote);
-    const { data } = result;
-    return data;
+    const {
+      data: {
+        data: [payload]
+      }
+    } = result;
+    return payload;
   } catch (error) {
     logger.error(`quotes_garden-service::getRandomQuote::error::${error.message}`);
     throw errors.apiError('Error getting data from api');
