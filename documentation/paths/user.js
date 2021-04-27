@@ -104,7 +104,7 @@ module.exports = {
           }
         },
         401: {
-          description: 'User unauthorized to create weet',
+          description: 'User unauthorized to create user',
           content: {
             'application/json': {
               schema: {
