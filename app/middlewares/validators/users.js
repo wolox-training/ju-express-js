@@ -1,6 +1,5 @@
 const { userSignUpSchema, userSignInSchema, usersGetAllSchema } = require('../schemas/users');
 const utilities = require('../../helpers/utilities');
-
 const errors = require('../../errors');
 
 const signUpValidator = (req, res, next) => {

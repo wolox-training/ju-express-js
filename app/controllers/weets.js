@@ -2,6 +2,16 @@ const quotesGardenService = require('../services/quotes_garden');
 const weetService = require('../services/weets');
 const logger = require('../logger/index');
 const { weetMapper } = require('../mappers/weets');
+const { weetObjectSerializer } = require('../serializers/weets');
+
+const getPagingData = (data, limit) => {
+  const { count, rows: weetsData } = data;
+
+  const weets = weetsData.map(weet => weetObjectSerializer(weet));
+  const totalPages = Math.ceil(count / limit);
+
+  return { count, weets, totalPages };
+};
 
 const createWeet = async (req, res, next) => {
   try {
@@ -16,9 +26,21 @@ const createWeet = async (req, res, next) => {
 
     return res.status(201).send({ weet: result.content });
   } catch (error) {
-    logger.error(`weets-controller::signUp::error::${error.message}`);
+    logger.error(`weets-controller::createWeet::error::${error.message}`);
     return next(error);
   }
 };
 
-module.exports = { createWeet };
+const getWeets = async (req, res, next) => {
+  try {
+    const { offset, limit } = req.query;
+    let weets = await weetService.getWeets(limit, offset);
+    weets = getPagingData(weets, limit);
+    return res.status(200).send(weets);
+  } catch (error) {
+    logger.error(`weets-controller::getWeets::error::${error.message}`);
+    return next(error);
+  }
+};
+
+module.exports = { createWeet, getWeets };
