@@ -1,9 +1,11 @@
 const common = require('./common');
 const user = require('./user');
+const weet = require('./weet');
 
 module.exports = {
   ...common,
   ...user,
+  ...weet,
   Error: {
     type: 'object',
     properties: {

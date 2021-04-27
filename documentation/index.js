@@ -1,6 +1,6 @@
 const config = require('../config');
 const schemas = require('./schemas');
-const paths = require('./paths');
+const { user, weet } = require('./paths');
 
 const port = config.common.api.port || 8080;
 
@@ -33,10 +33,16 @@ module.exports = {
   security: [],
   tags: [
     {
-      name: 'CRUD operations'
+      name: 'User operations'
+    },
+    {
+      name: 'Weet operations'
     }
   ],
-  paths,
+  paths: {
+    ...user,
+    ...weet
+  },
   components: {
     schemas,
     securitySchemes: {}
