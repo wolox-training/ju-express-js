@@ -8,11 +8,10 @@ describe('POST /weets get all weets', () => {
   let weets = null;
 
   beforeAll(async () => {
-
     await request(app)
       .post('/signup')
       .send(userData);
-    
+
     const signIn = await request(app)
       .post('/signin')
       .send(userDataAuthorized);
@@ -20,7 +19,7 @@ describe('POST /weets get all weets', () => {
       body: { token }
     } = signIn);
 
-    for ( let i = 0; i <= 2; i++) {
+    for (let i = 0; i <= 2; i++) {
       await request(app)
         .post('/weets')
         .set('authorization', `Bearer ${token}`)
