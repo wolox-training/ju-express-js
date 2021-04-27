@@ -17,7 +17,7 @@ const createWeet = async (req, res, next) => {
   try {
     const { token } = req;
     const { id } = token;
-    const { quoteText } = await quotesGardenService.getRandomQuote();
+    const quoteText = await quotesGardenService.getRandomQuote();
     const weetData = weetMapper({ id, quoteText });
 
     const result = await weetService.createWeet(weetData);

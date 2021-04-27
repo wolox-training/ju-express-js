@@ -9,7 +9,7 @@ const {
 const { weetsGetAllValidator } = require('./middlewares/validators/weets');
 
 exports.init = app => {
-  app.post('/weets', validateToken, weetsController.createWeet);
+  app.post('/weet', validateToken, weetsController.createWeet);
   app.get('/weets', [weetsGetAllValidator, validateToken], weetsController.getWeets);
   app.post('/signup', signUpValidator, userController.signUp);
   app.post('/signin', signInValidator, userController.signIn);

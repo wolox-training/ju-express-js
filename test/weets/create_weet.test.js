@@ -19,7 +19,7 @@ describe('POST /weets user register weet into database', () => {
     } = signIn);
 
     const result = await request(app)
-      .post('/weets')
+      .post('/weet')
       .set('authorization', `Bearer ${token}`)
       .send();
     ({
@@ -37,7 +37,7 @@ describe('POST /weets user register weet into database', () => {
   });
 });
 
-describe('POST /weets user can not register weet not authorized by invalid token', () => {
+describe('POST /weet user can not register weet not authorized by invalid token', () => {
   let status = null;
   const token = 'bad token';
   let message = null;
@@ -45,7 +45,7 @@ describe('POST /weets user can not register weet not authorized by invalid token
 
   beforeAll(async () => {
     const result = await request(app)
-      .post('/weets')
+      .post('/weet')
       .set('authorization', `Bearer ${token}`)
       .send();
 

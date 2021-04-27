@@ -2,7 +2,7 @@ const request = require('supertest');
 const app = require('../../app');
 const { userData, userDataAuthorized } = require('../users/data/users');
 
-describe('POST /weets get all weets', () => {
+describe('GET /weets get all weets', () => {
   let status = null;
   let token = null;
   let weets = null;
@@ -21,7 +21,7 @@ describe('POST /weets get all weets', () => {
 
     for (let i = 0; i <= 2; i++) {
       await request(app)
-        .post('/weets')
+        .post('/weet')
         .set('authorization', `Bearer ${token}`)
         .send();
     }
@@ -50,7 +50,7 @@ describe('POST /weets get all weets', () => {
   });
 });
 
-describe('POST /users get all users not authorized by invalid token', () => {
+describe('GET /weets get all weets not authorized by invalid token', () => {
   let status = null;
   const token = 'bad token';
   let message = null;

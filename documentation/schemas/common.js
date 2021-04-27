@@ -24,5 +24,18 @@ module.exports = {
   totalPages: {
     type: 'number',
     example: 0
+  },
+  unauthorizedUser: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: 'Invalid token'
+      },
+      internal_code: {
+        type: 'string',
+        example: 'conflict_error'
+      }
+    }
   }
 };
