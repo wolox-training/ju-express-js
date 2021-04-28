@@ -19,7 +19,7 @@ describe('GET /weets get all weets', () => {
       body: { token }
     } = signIn);
 
-    for (let i = 1; i <= 3; i++) {
+    for (let i = 0; i <= 2; i++) {
       await request(app)
         .post('/weets')
         .set('authorization', `Bearer ${token}`)
@@ -35,7 +35,7 @@ describe('GET /weets get all weets', () => {
       body: { weets },
       status
     } = result);
-  }, 15000);
+  }, 20000);
 
   it('Should return status code 200', () => {
     expect(status).toBe(200);
