@@ -1,5 +1,5 @@
 module.exports = {
-  '/weet': {
+  '/weets': {
     post: {
       tags: ['Weet operations'],
       description: 'Create weet',
@@ -27,9 +27,7 @@ module.exports = {
           }
         }
       }
-    }
-  },
-  '/weets': {
+    },
     get: {
       tags: ['Weet operations'],
       description: 'Get all weets',

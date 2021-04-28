@@ -6,15 +6,6 @@ const { signUpMapper } = require('../mappers/users');
 const { userObjectSerializer } = require('../serializers/users');
 const { USER_ROLE } = require('../helpers/constants');
 
-const getPagingData = (data, limit) => {
-  const { count, rows: usersData } = data;
-
-  const users = usersData.map(user => userObjectSerializer(user));
-  const totalPages = Math.ceil(count / limit);
-
-  return { count, users, totalPages };
-};
-
 const signUp = async (req, res, next) => {
   try {
     const { body } = req;
@@ -71,9 +62,14 @@ const signIn = async (req, res, next) => {
 const getUsers = async (req, res, next) => {
   try {
     const { offset, limit } = req.query;
-    let users = await userService.getUsers(limit, offset);
-    users = getPagingData(users, limit);
-    return res.status(200).send(users);
+    const entityName = 'users';
+    let result = await userService.getUsers(limit, offset);
+    result = utilities.getPagingData(result, limit, entityName);
+    let { users } = result;
+    users = users.map(user => userObjectSerializer(user));
+    result.users = users;
+
+    return res.status(200).send(result);
   } catch (error) {
     logger.error(`users-controller::getUsers::error::${error.message}`);
     return next(error);

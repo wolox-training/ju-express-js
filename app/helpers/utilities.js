@@ -55,3 +55,11 @@ exports.verifyToken = token => {
     throw errors.defaultError('Error trying to verifyToken token');
   }
 };
+
+exports.getPagingData = (data, limit, entityName) => {
+  const { count, rows } = data;
+
+  const totalPages = Math.ceil(count / limit);
+
+  return { count, [entityName]: rows, totalPages };
+};

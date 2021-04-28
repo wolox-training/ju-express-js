@@ -19,7 +19,7 @@ module.exports = {
   },
   countPaginator: {
     type: 'number',
-    example: 0
+    example: 1
   },
   totalPages: {
     type: 'number',
