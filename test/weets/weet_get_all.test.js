@@ -19,9 +19,9 @@ describe('GET /weets get all weets', () => {
       body: { token }
     } = signIn);
 
-    for (let i = 0; i <= 2; i++) {
+    for (let i = 1; i <= 3; i++) {
       await request(app)
-        .post('/weet')
+        .post('/weets')
         .set('authorization', `Bearer ${token}`)
         .send();
     }
