@@ -1,7 +1,6 @@
 const { User } = require('../models');
 const logger = require('../logger');
 const errors = require('../errors');
-
 const { DEFAULT_LIMIT, DEFAULT_OFFSET } = require('../helpers/constants');
 
 const createUser = async userData => {

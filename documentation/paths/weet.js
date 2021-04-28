@@ -27,6 +27,41 @@ module.exports = {
           }
         }
       }
+    },
+    get: {
+      tags: ['Weet operations'],
+      description: 'Get all weets',
+      operationId: 'getAllWeets',
+      parameters: [
+        {
+          $ref: '#/components/schemas/limit'
+        },
+        {
+          $ref: '#/components/schemas/offset'
+        }
+      ],
+      responses: {
+        200: {
+          description: 'Weets data successful',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/getAllWeetsData'
+              }
+            }
+          }
+        },
+        401: {
+          description: 'User unauthorized to create weet',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/unauthorizedUser'
+              }
+            }
+          }
+        }
+      }
     }
   }
 };

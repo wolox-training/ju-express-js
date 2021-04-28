@@ -1,6 +1,7 @@
 const { Weet } = require('../models');
 const logger = require('../logger');
 const errors = require('../errors');
+const { DEFAULT_LIMIT, DEFAULT_OFFSET } = require('../helpers/constants');
 
 const createWeet = async weetData => {
   try {
@@ -13,6 +14,22 @@ const createWeet = async weetData => {
   }
 };
 
+const getWeets = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
+  try {
+    logger.info(`weets-service::getWeets::limit::${limit}::offset::${offset}`);
+    const response = await Weet.findAndCountAll({
+      offset,
+      limit,
+      attributes: ['id', 'userId', 'content']
+    });
+    return response;
+  } catch (error) {
+    logger.error(`weets-service::getWeets::error::${error.message}`);
+    throw errors.databaseError('Error trying to get weet data from the DB');
+  }
+};
+
 module.exports = {
-  createWeet
+  createWeet,
+  getWeets
 };

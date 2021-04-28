@@ -102,6 +102,16 @@ module.exports = {
               }
             }
           }
+        },
+        401: {
+          description: 'User unauthorized to create user',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/unauthorizedUser'
+              }
+            }
+          }
         }
       }
     }
