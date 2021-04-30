@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('../logger/index');
 const errors = require('../errors');
 const { secret } = require('../../config').common.session;
-const { TOKEN_JWT_EXPIRES } = require('./constants');
+const { TOKEN_JWT_EXPIRES, USER_POSITIONS } = require('./constants');
 
 exports.encryptText = async textToEncrypt => {
   try {
@@ -33,7 +33,7 @@ exports.compareEncryptText = async (textSentToCompare, textEncrypted) => {
 
 exports.generateToken = data => {
   try {
-    logger.info(`utilities::generateToken::data::${data}`);
+    logger.info(`utilities::generateToken::data::${JSON.stringify(data)}`);
     const token = jwt.sign(data, secret, { expiresIn: TOKEN_JWT_EXPIRES });
 
     return { token, expires: TOKEN_JWT_EXPIRES };
@@ -62,4 +62,16 @@ exports.getPagingData = (data, limit, entityName) => {
   const totalPages = Math.ceil(count / limit);
 
   return { count, [entityName]: rows, totalPages };
+};
+
+exports.getUserPosition = score => {
+  let position = null;
+  if (score <= 5) position = USER_POSITIONS.DEVELOPER;
+  else if (score <= 9) position = USER_POSITIONS.LEAD;
+  else if (score <= 19) position = USER_POSITIONS.TL;
+  else if (score <= 29) position = USER_POSITIONS.EM;
+  else if (score <= 49) position = USER_POSITIONS.HEAD;
+  else position = USER_POSITIONS.CEO;
+
+  return position;
 };
