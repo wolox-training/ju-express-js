@@ -65,6 +65,7 @@ exports.getPagingData = (data, limit, entityName) => {
 };
 
 exports.getUserPosition = score => {
+  logger.info(`utilities::getUserPosition::score::${score}`);
   let position = null;
   if (score <= 5) position = USER_POSITIONS.DEVELOPER;
   else if (score <= 9) position = USER_POSITIONS.LEAD;
@@ -75,3 +76,8 @@ exports.getUserPosition = score => {
 
   return position;
 };
+
+exports.customErrorMessages = error => ({
+  'any.required': `field '${error.path[0]}' is required`,
+  'string.base': `field '${error.path[0]}' must be a string'`
+});

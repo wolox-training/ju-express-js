@@ -1,9 +1,5 @@
 const Joi = require('joi');
-
-const customErrorMessages = error => ({
-  'any.required': `field '${error.path[0]}' is required`,
-  'string.base': `field '${error.path[0]}' must be a string'`
-});
+const utilities = require('../../helpers/utilities');
 
 const userSignUpSchema = Joi.object({
   first_name: Joi.string().required(),
@@ -23,7 +19,7 @@ const userSignUpSchema = Joi.object({
   .required()
   .error(err =>
     err.map(error => {
-      const messages = customErrorMessages(error);
+      const messages = utilities.customErrorMessages(error);
       error.message = messages[error.code] || error.message;
       return error;
     })
@@ -45,7 +41,7 @@ const userSignInSchema = Joi.object({
   .required()
   .error(err =>
     err.map(error => {
-      const messages = customErrorMessages(error);
+      const messages = utilities.customErrorMessages(error);
       error.message = messages[error.code] || error.message;
       return error;
     })
@@ -65,7 +61,7 @@ const usersGetAllSchema = Joi.object({
   .required()
   .error(err =>
     err.map(error => {
-      const messages = customErrorMessages(error);
+      const messages = utilities.customErrorMessages(error);
       error.message = messages[error.code] || error.message;
       return error;
     })

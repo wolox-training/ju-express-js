@@ -1,8 +1,10 @@
 const weetService = require('../services/weets');
 const ratingWeetService = require('../services/ratingWeets');
+const ratingWeetInteractor = require('../interactors/ratingWeets');
 const logger = require('../logger/index');
 const errors = require('../errors');
 const { ratingWeetMapper } = require('../mappers/ratingWeets');
+const { ratingWeetObjectSerializer } = require('../serializers/ratingWeets');
 
 const createRatingWeet = async (req, res, next) => {
   try {
@@ -25,17 +27,15 @@ const createRatingWeet = async (req, res, next) => {
     if (ratingWeetDataSaved) {
       throw errors.conflictError('The weetRating already exists');
     }
-
-    //  userData.password = await utilities.encryptText(userData.password);
-    //  userData.role = USER_ROLE.REGULAR;
-
-    //  const result = await userService.createUser(userData);
+    const { userId: weetUserId } = weetDataSaved;
+    const ratingWeetSaved = await ratingWeetInteractor.createRatingWeet(ratingWeetData, weetUserId);
+    const ratingViewSerialized = ratingWeetObjectSerializer(ratingWeetSaved);
 
     logger.info(`Rating weet ${JSON.stringify(ratingWeetData)} created succesfully`);
 
-    return res.status(201).send({ weetDataSaved });
+    return res.status(201).send({ rating: ratingViewSerialized });
   } catch (error) {
-    logger.error(`ratingWeets-controller::signUp::error::${error.message}`);
+    logger.error(`ratingWeets-controller::createRatingWeet::error::${error.message}`);
     return next(error);
   }
 };

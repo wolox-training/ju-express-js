@@ -5,7 +5,7 @@ const errors = require('../errors');
 const getRatingWeetByRatingWeet = async ratingWeet => {
   try {
     logger.info(`ratingWeets-service::getRatingWeetByRatingWeet::ratingWeet::${JSON.stringify(ratingWeet)}`);
-    const result = await Rating.findAll({
+    const result = await Rating.findOne({
       where: ratingWeet,
       attributes: ['id', 'ratingUserId', 'weetId', 'score']
     });
