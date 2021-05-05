@@ -105,9 +105,23 @@ const signUpAdmin = async (req, res, next) => {
   }
 };
 
+const invalidateAllSessions = async (req, res, next) => {
+  try {
+    const { id } = req.user;
+
+    const deletedTokens = await userService.invalidateAll(id);
+    logger.info(`The number of tokens deleted are: ${deletedTokens}`);
+    return res.status(200).send({ message: 'All sessions invalidated successfully' });
+  } catch (error) {
+    logger.error(error);
+    return next(error);
+  }
+};
+
 module.exports = {
   signUp,
   signIn,
   getUsers,
-  signUpAdmin
+  signUpAdmin,
+  invalidateAllSessions
 };
