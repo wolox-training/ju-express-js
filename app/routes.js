@@ -1,7 +1,7 @@
 const { healthCheck } = require('./controllers/healthCheck');
 const userController = require('./controllers/users');
 const weetsController = require('./controllers/weets');
-const ratingWeetsController = require('./controllers//ratingWeets');
+const ratingWeetsController = require('./controllers/ratingWeets');
 
 const {
   signUpValidator,

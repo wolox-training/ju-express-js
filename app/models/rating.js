@@ -27,6 +27,14 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: true,
       tableName: 'ratings',
       underscored: true
+    },
+    {
+      indexes: [
+        {
+          unique: true,
+          fields: ['rating_user_id', 'weet_id']
+        }
+      ]
     }
   );
   Rating.associate = models => {
