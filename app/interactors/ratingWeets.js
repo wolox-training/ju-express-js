@@ -1,7 +1,7 @@
 const { Rating, sequelize } = require('../models');
 const weetService = require('../services/weets');
 const ratingWeetService = require('../services/ratingWeets');
-// const userInteractor = require('./users');
+const userInteractor = require('./users');
 const logger = require('../logger');
 const errors = require('../errors');
 
@@ -13,7 +13,7 @@ const createRatingWeet = async ratingWeetData => {
   );
   let transaction = {};
   let rateWeetResult = {};
-  const { ratingUserId, weetId } = ratingWeetData;
+  const { ratingUserId, weetId, score } = ratingWeetData;
   try {
     const weetDataSaved = await weetService.getWeetById(weetId);
 
@@ -27,32 +27,32 @@ const createRatingWeet = async ratingWeetData => {
       throw errors.conflictError('The weetRating already exists');
     }
 
-    // const { userId: weetUserId } = weetDataSaved;
-
     transaction = await sequelize.transaction();
 
     logger.info(
       `ratingWeets-interactor::createRatingWeet::upsert::ratingWeetData::${JSON.stringify(ratingWeetData)}`
     );
 
-    // await userInteractor.updateUserPosition(weetId, weetUserId, transaction);
+    const ratingWeetToUpdate = await ratingWeetService.getRatingWeetByRatingWeet({ ratingUserId, weetId });
 
-    try {
-      rateWeetResult = await Rating.create(ratingWeetData, {
-        transaction,
-        returning: true,
-        attributes: ['ratingUserId', 'weetId', 'score']
-      });
-    } catch (error) {
-      const { id } = await ratingWeetService.getRatingWeetByRatingWeet({ ratingUserId, weetId });
-      logger.info('acaaaaaaaaaa::error');
-      rateWeetResult = await Rating.update(ratingWeetData, {
-        where: { id },
-        transaction,
-        returning: true,
-        attributes: ['ratingUserId', 'weetId', 'score']
-      });
+    if (ratingWeetToUpdate) {
+      logger.info(
+        `ratingWeets-interactor::updating rating weet::ratingWeetToUpdate::${JSON.stringify(
+          ratingWeetToUpdate
+        )}`
+      );
+      ratingWeetToUpdate.score = score;
+      rateWeetResult = await ratingWeetToUpdate.save({ transaction });
+    } else {
+      logger.info(
+        `ratingWeets-interactor::creating rating weet::ratingWeetData::${JSON.stringify(ratingWeetData)}`
+      );
+      rateWeetResult = await Rating.create(ratingWeetData, { transaction });
     }
+
+    const { userId: weetUserId } = weetDataSaved;
+
+    await userInteractor.updateUserPosition(weetId, weetUserId, transaction);
 
     await transaction.commit();
 
