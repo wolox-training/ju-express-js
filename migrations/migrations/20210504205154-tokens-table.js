@@ -11,7 +11,7 @@ module.exports = {
         unique: true
       },
       token: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       user_id: {

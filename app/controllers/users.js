@@ -1,4 +1,5 @@
 const userService = require('../services/users');
+const tokenService = require('../services/tokens');
 const logger = require('../logger/index');
 const utilities = require('../helpers/utilities');
 const errors = require('../errors');
@@ -51,6 +52,9 @@ const signIn = async (req, res, next) => {
     const { token, expires } = utilities.generateToken(userSerialized);
 
     logger.info(`user with email ${user.email} has logged in successfully`);
+
+    const savedToken = await tokenService.createToken(userSerialized, token);
+    logger.info(`users-controller::signIn::TokenSaved: ${JSON.stringify(savedToken)}`);
 
     return res.status(200).send({ token, expires });
   } catch (error) {
@@ -107,13 +111,13 @@ const signUpAdmin = async (req, res, next) => {
 
 const invalidateAllSessions = async (req, res, next) => {
   try {
-    const { id } = req.user;
+    const { token } = req;
 
-    const deletedTokens = await userService.invalidateAll(id);
-    logger.info(`The number of tokens deleted are: ${deletedTokens}`);
-    return res.status(200).send({ message: 'All sessions invalidated successfully' });
+    const deletedTokens = await tokenService.invalidateTokens(token.id);
+    logger.info(`users-controller::invalidateAllSessions::${deletedTokens}`);
+    return res.status(200).send({ message: 'Sessions from user invalidated successfully' });
   } catch (error) {
-    logger.error(error);
+    logger.error(`users-controller::invalidateAllSessions::error::${error.message}`);
     return next(error);
   }
 };

@@ -152,5 +152,14 @@ module.exports = {
         example: 'conflict_error'
       }
     }
+  },
+  invalidatedAllSessions: {
+    type: 'object',
+    properties: {
+      message: {
+        type: 'string',
+        example: 'Sessions from user invalidated successfully'
+      }
+    }
   }
 };

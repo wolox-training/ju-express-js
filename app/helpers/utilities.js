@@ -46,8 +46,7 @@ exports.generateToken = data => {
 exports.verifyToken = token => {
   try {
     logger.info(`utilities::verifyToken::token::${token}`);
-    const tokenToVerify = token.split(' ')[1];
-    const verifyToken = jwt.verify(tokenToVerify, secret);
+    const verifyToken = jwt.verify(token, secret);
 
     return verifyToken;
   } catch (error) {
