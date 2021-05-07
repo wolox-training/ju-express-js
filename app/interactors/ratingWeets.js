@@ -1,22 +1,39 @@
-const { Rating, User, sequelize } = require('../models');
+const { Rating, sequelize } = require('../models');
+const weetService = require('../services/weets');
+const ratingWeetService = require('../services/ratingWeets');
+const userInteractor = require('./users');
 const logger = require('../logger');
 const errors = require('../errors');
-const utilities = require('../helpers/utilities');
 
-const createRatingWeet = async (ragintgWeetData, weetUserId) => {
+const createRatingWeet = async ratingWeetData => {
+  logger.info(
+    `ratingWeets-interactor::createRatingWeet::ratingUserId::ratingWeetData::${JSON.stringify(
+      ratingWeetData
+    )}`
+  );
   let transaction = {};
   let rateWeetResult = {};
-  const { ratingUserId, weetId, score } = ragintgWeetData;
+  const { ratingUserId, weetId, score } = ratingWeetData;
   try {
+    const weetDataSaved = await weetService.getWeetById(weetId);
+
+    if (!weetDataSaved) {
+      throw errors.conflictError('The weet does not exists');
+    }
+
+    const ratingWeetDataSaved = await ratingWeetService.getRatingWeetByRatingWeet(ratingWeetData);
+
+    if (ratingWeetDataSaved) {
+      throw errors.conflictError('The weetRating already exists');
+    }
+
     transaction = await sequelize.transaction();
 
     logger.info(
-      `ratingWeets-interactor::getting rating weet to update::ratingUserId::${ratingUserId}::weetId::${weetId}`
+      `ratingWeets-interactor::createRatingWeet::upsert::ratingWeetData::${JSON.stringify(ratingWeetData)}`
     );
-    const ratingWeetToUpdate = await Rating.findOne({
-      where: { ratingUserId, weetId },
-      attributes: ['id', 'ratingUserId', 'weetId', 'score']
-    });
+
+    const ratingWeetToUpdate = await ratingWeetService.getRatingWeetByRatingWeet({ ratingUserId, weetId });
 
     if (ratingWeetToUpdate) {
       logger.info(
@@ -28,29 +45,22 @@ const createRatingWeet = async (ragintgWeetData, weetUserId) => {
       rateWeetResult = await ratingWeetToUpdate.save({ transaction });
     } else {
       logger.info(
-        `ratingWeets-interactor::creating rating weet::ragintgWeetData::${JSON.stringify(ragintgWeetData)}`
+        `ratingWeets-interactor::creating rating weet::ratingWeetData::${JSON.stringify(ratingWeetData)}`
       );
-      rateWeetResult = await Rating.create(ragintgWeetData, { transaction });
+      rateWeetResult = await Rating.create(ratingWeetData, { transaction });
     }
 
-    logger.info(`ratingWeets-interactor::getting user data to update position::weetUserId::${weetUserId}`);
-    const userData = await User.findOne({ where: { id: weetUserId } });
+    const { userId: weetUserId } = weetDataSaved;
 
-    const weetTotalScore = await Rating.sum('score', { where: { weetId }, transaction });
-    logger.info(`ratingWeets-interactor::weetTotalScore::${weetTotalScore}`);
-    const position = utilities.getUserPosition(weetTotalScore);
-
-    logger.info(`ratingWeets-interactor::weetUserId::${weetUserId}::position::${position}`);
-    userData.position = position;
-    await userData.save({ transaction });
+    await userInteractor.updateUserPosition(weetId, weetUserId, transaction);
 
     await transaction.commit();
 
     return rateWeetResult;
   } catch (error) {
     if (transaction.rollback) await transaction.rollback();
-    logger.error(error);
-    throw errors.databaseError('Error creating rating weet into DB');
+    logger.error(`ratingWeets-interactor::createRatingWeet::error::${error.message}`);
+    throw error;
   }
 };
 

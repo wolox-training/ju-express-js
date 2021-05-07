@@ -37,6 +37,10 @@ module.exports = {
         type: Sequelize.DATE
       }
     });
+    await queryInterface.addIndex('ratings', ['rating_user_id', 'weet_id'], {
+      name: 'rating_user_id_weet_id_uk',
+      unique: true
+    });
   },
 
   down: queryInterface => queryInterface.dropTable('ratings')

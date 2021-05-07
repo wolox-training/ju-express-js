@@ -16,6 +16,19 @@ const getRatingWeetByRatingWeet = async ratingWeet => {
   }
 };
 
+const getTotalScoreByWeet = async (weetId, transaction) => {
+  try {
+    logger.info(`ratingWeets-service::getTotalScoreByWeet::weetId::${weetId}`);
+    const result = await Rating.sum('score', { where: { weetId }, transaction });
+    logger.info(`ratingWeets-service::getTotalScoreByWeet::result::${result}`);
+    return result;
+  } catch (error) {
+    logger.error(`ratingWeets-service::getRatingWeetByRatingWeet::error::${error.message}`);
+    throw errors.databaseError('Error getting total score into DB');
+  }
+};
+
 module.exports = {
-  getRatingWeetByRatingWeet
+  getRatingWeetByRatingWeet,
+  getTotalScoreByWeet
 };
