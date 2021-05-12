@@ -60,7 +60,10 @@ const createRatingWeet = async ratingWeetData => {
   } catch (error) {
     if (transaction.rollback) await transaction.rollback();
     logger.error(`ratingWeets-interactor::createRatingWeet::error::${error.message}`);
-    throw error;
+    if (error.internalCode && error.internalCode === errors.CONFLICT_ERROR) {
+      throw error;
+    }
+    throw errors.databaseError('Error creating rating weet into DB');
   }
 };
 
