@@ -255,3 +255,34 @@ describe('POST /signup - Password is missing', () => {
     expect(internal_code).toBe('bad_request_error');
   });
 });
+
+describe('POST /signup - failed sending welcome email', () => {
+  let status = null;
+  let message = null;
+  let internal_code = null;
+
+  beforeAll(async () => {
+    process.env.MAILER_USER = 'badmail@Mail.com';
+    process.env.MAILER_PASSWORD = 'badpass';
+    const result = await request(app)
+      .post('/signup')
+      .send(userData);
+
+    ({
+      body: { message, internal_code },
+      status
+    } = result);
+  });
+
+  it('Should fail and display a password message', () => {
+    expect(message).toBe('Error sending the welcome email');
+  });
+
+  it('Should return status code 424', () => {
+    expect(status).toBe(424);
+  });
+
+  it('Should return a failed dependency code error', () => {
+    expect(internal_code).toBe('failed_dependency_error');
+  });
+});
