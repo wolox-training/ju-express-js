@@ -4,7 +4,7 @@ const errors = require('../errors');
 
 const createToken = async (userData, token) => {
   try {
-    logger.info(`tokens-service::createToken::userData::${JSON.stringify(userData)}token::${token}`);
+    logger.info('tokens-service::createToken');
     const { id: userId } = userData;
     const result = await Token.create({ userId, token });
     return result;
@@ -27,7 +27,7 @@ const invalidateTokens = async userId => {
 
 const getTokenByUserAndToken = async (userId, token) => {
   try {
-    logger.info(`tokens-service::getTokenByUserAndToken::token::${token}`);
+    logger.info(`tokens-service::getTokenByUserAndToken::userId::${userId}`);
     const result = await Token.findOne({ where: { userId, token } });
     return result;
   } catch (error) {
