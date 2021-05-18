@@ -55,8 +55,7 @@ const signIn = async (req, res, next) => {
 
     logger.info(`user with email ${user.email} has logged in successfully`);
 
-    const savedToken = await tokenService.createToken(userSerialized, token);
-    logger.info(`users-controller::signIn::TokenSaved: ${JSON.stringify(savedToken)}`);
+    await tokenService.createToken(userSerialized, token);
 
     return res.status(200).send({ token, expires });
   } catch (error) {
