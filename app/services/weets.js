@@ -29,7 +29,19 @@ const getWeets = async (limit = DEFAULT_LIMIT, offset = DEFAULT_OFFSET) => {
   }
 };
 
+const getWeetById = async id => {
+  try {
+    logger.info(`weets-service::getWeetById::id::${id}`);
+    const result = await Weet.findOne({ where: { id } });
+    return result;
+  } catch (error) {
+    logger.error(`weets-service::getWeetById::error::${error.message}`);
+    throw errors.databaseError('Error getting weet by id into DB');
+  }
+};
+
 module.exports = {
   createWeet,
-  getWeets
+  getWeets,
+  getWeetById
 };

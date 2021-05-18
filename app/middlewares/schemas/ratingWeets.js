@@ -1,16 +1,10 @@
 const Joi = require('joi');
 const utilities = require('../../helpers/utilities');
 
-const weetsGetAllSchema = Joi.object({
-  limit: Joi.number()
+const ratingWeetCreatechema = Joi.object({
+  score: Joi.number()
+    .valid(-1, 1)
     .required()
-    .min(1)
-    .max(50)
-    .default(20),
-  offset: Joi.number()
-    .required()
-    .min(0)
-    .default(0)
 })
   .required()
   .error(err =>
@@ -22,5 +16,5 @@ const weetsGetAllSchema = Joi.object({
   );
 
 module.exports = {
-  weetsGetAllSchema
+  ratingWeetCreatechema
 };

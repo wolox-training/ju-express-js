@@ -33,7 +33,7 @@ exports.compareEncryptText = async (textSentToCompare, textEncrypted) => {
 
 exports.generateToken = data => {
   try {
-    logger.info(`utilities::generateToken::data::${data}`);
+    logger.info(`utilities::generateToken::data::${JSON.stringify(data)}`);
     const token = jwt.sign(data, secret, { expiresIn: TOKEN_JWT_EXPIRES });
 
     return { token, expires: TOKEN_JWT_EXPIRES };
@@ -63,3 +63,8 @@ exports.getPagingData = (data, limit, entityName) => {
 
   return { count, [entityName]: rows, totalPages };
 };
+
+exports.customErrorMessages = error => ({
+  'any.required': `field '${error.path[0]}' is required`,
+  'string.base': `field '${error.path[0]}' must be a string'`
+});
