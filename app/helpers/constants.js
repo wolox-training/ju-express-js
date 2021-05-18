@@ -14,6 +14,11 @@ const USER_POSITIONS = {
   HEAD: 'HEAD',
   CEO: 'CEO'
 };
+const TEMPLATES = {
+  WELCOME: 'welcome.html'
+};
+
+const EMAIL_SENDER = 'johnatan.urbano@wolox.co';
 
 module.exports = {
   TOKEN_JWT_EXPIRES,
@@ -21,5 +26,7 @@ module.exports = {
   DEFAULT_OFFSET,
   USER_ROLE,
   DEFAULT_LENGTH_WEET,
-  USER_POSITIONS
+  USER_POSITIONS,
+  TEMPLATES,
+  EMAIL_SENDER
 };

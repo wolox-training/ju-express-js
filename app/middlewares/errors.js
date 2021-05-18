@@ -8,7 +8,8 @@ const statusCodes = {
   [errors.DEFAULT_ERROR]: 500,
   [errors.BAD_REQUEST_ERROR]: 400,
   [errors.CONFLICT_ERROR]: 409,
-  [errors.UNAUTHORIZED_ERROR]: 401
+  [errors.UNAUTHORIZED_ERROR]: 401,
+  [errors.FAILED_DEPENDENCY_ERROR]: 424
 };
 
 exports.handle = (error, req, res, next) => {

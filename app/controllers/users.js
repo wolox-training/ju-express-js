@@ -1,5 +1,6 @@
 const userService = require('../services/users');
 const tokenService = require('../services/tokens');
+const mailerService = require('../services/mailer');
 const logger = require('../logger/index');
 const utilities = require('../helpers/utilities');
 const errors = require('../errors');
@@ -22,6 +23,7 @@ const signUp = async (req, res, next) => {
     userData.role = USER_ROLE.REGULAR;
 
     const result = await userService.createUser(userData);
+    await mailerService.sendWelcomeEmail(userData);
 
     logger.info(`User ${result.firstName} created succesfully`);
 
