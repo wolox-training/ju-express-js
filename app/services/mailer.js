@@ -27,7 +27,7 @@ const transporterConfig = () => ({
 
 const sendWelcomeEmail = async userData => {
   try {
-    logger.info('hola::', process.env.MAILER_USER, '   uffff', process.env.MAILER_PASSWORD);
+    logger.info(`mailer-service::sendWelcomeEmail::userData::${JSON.stringify(userData)}`);
     const { firstName, lastName, email } = userData;
     const transporter = mailer.createTransport(transporterConfig());
     const emailData = await fs.promises.readFile(
@@ -43,6 +43,42 @@ const sendWelcomeEmail = async userData => {
   }
 };
 
+const dailyMailOptions = (userData, html, weets) => {
+  const { firstName, lastName, email } = userData;
+  return {
+    from: `Weet APP <${EMAIL_SENDER}>`,
+    to: email,
+    subject: 'Congratulations!',
+    text: `Congratulations ${firstName} ${lastName}! You are the most Witterer of the day with ${weets} Weets.`,
+    html
+  };
+};
+
+const sendCongratulationEmail = async (userData, dailyWeets) => {
+  try {
+    logger.info(
+      `mailer-service::sendCongratulationEmail::userData::${JSON.stringify(
+        userData
+      )}::dailyWeets::${JSON.stringify(dailyWeets)}`
+    );
+    const { firstName, lastName } = userData;
+    const { weets_quantity: weets } = dailyWeets;
+    const transporter = mailer.createTransport(transporterConfig());
+    const emailData = await fs.promises.readFile(
+      path.join(__dirname, `../templates/${constants.TEMPLATES.CONGRATULATIONS}`),
+      'utf8'
+    );
+    const template = handlebars.compile(emailData);
+    const html = template({ firstName, lastName, weets });
+    const result = await transporter.sendMail(dailyMailOptions(userData, html, weets));
+    return result;
+  } catch (error) {
+    logger.error(`mailer-service::sendCongratulationEmail::error::${error.message}`);
+    throw errors.failedDependencyError('Error sending the congratulations email');
+  }
+};
+
 module.exports = {
-  sendWelcomeEmail
+  sendWelcomeEmail,
+  sendCongratulationEmail
 };

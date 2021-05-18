@@ -15,10 +15,12 @@ const USER_POSITIONS = {
   CEO: 'CEO'
 };
 const TEMPLATES = {
-  WELCOME: 'welcome.html'
+  WELCOME: 'welcome.html',
+  CONGRATULATIONS: 'congratulation.html'
 };
-
 const EMAIL_SENDER = 'johnatan.urbano@wolox.co';
+const TIME_ZONE = 'America/Bogota';
+const CRON_TIME = '59 59 23 * * *';
 
 module.exports = {
   TOKEN_JWT_EXPIRES,
@@ -28,5 +30,7 @@ module.exports = {
   DEFAULT_LENGTH_WEET,
   USER_POSITIONS,
   TEMPLATES,
-  EMAIL_SENDER
+  EMAIL_SENDER,
+  TIME_ZONE,
+  CRON_TIME
 };

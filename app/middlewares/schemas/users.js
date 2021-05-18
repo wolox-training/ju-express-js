@@ -28,7 +28,7 @@ const userSignUpSchema = Joi.object({
 const userSignInSchema = Joi.object({
   email: Joi.string()
     .email()
-    .regex(/^[a-zA-Z]+.[a-zA-Z]+@wolox.com+((.co)|(.ar)|(.mx))$/)
+    .regex(/^[a-zA-Z]+.[a-zA-Z]+@wolox.+((co)|(ar)|(mx))$/)
     .required()
     .messages({
       'string.pattern.base': 'email must be Wolox domain'
