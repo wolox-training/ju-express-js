@@ -1,4 +1,6 @@
-const { Weet } = require('../models');
+const { Op } = require('sequelize');
+const { moment } = require('../../config/moment');
+const { Weet, sequelize } = require('../models');
 const logger = require('../logger');
 const errors = require('../errors');
 const { DEFAULT_LIMIT, DEFAULT_OFFSET } = require('../helpers/constants');
@@ -40,8 +42,47 @@ const getWeetById = async id => {
   }
 };
 
+const getWittererOfTheDay = async () => {
+  const startDate = moment()
+    .set({
+      hour: '00',
+      minute: '00',
+      second: '00'
+    })
+    .format();
+  const endDate = moment()
+    .set({
+      hour: '23',
+      minute: '59',
+      second: '59'
+    })
+    .format();
+  logger.error(`weets-service::getWittererOfTheDay::startDate::${startDate}`);
+  logger.error(`weets-service::getWittererOfTheDay::endDate::${endDate}`);
+  const maxWitterer = await Weet.findOne({
+    attributes: ['user_id', [sequelize.fn('COUNT', sequelize.col('id')), 'weets_quantity']],
+    group: ['user_id'],
+    where: {
+      created_at: {
+        [Op.between]: [startDate, endDate]
+      }
+    },
+    order: [[sequelize.literal('weets_quantity'), 'DESC']]
+  }).catch(error => {
+    logger.error(`weets-service::getWittererOfTheDay::error::${error.message}`);
+    throw errors.databaseError(error.message);
+  });
+  if (!maxWitterer) return false;
+  return {
+    ...maxWitterer.dataValues,
+    startDate,
+    endDate
+  };
+};
+
 module.exports = {
   createWeet,
   getWeets,
-  getWeetById
+  getWeetById,
+  getWittererOfTheDay
 };

@@ -51,9 +51,21 @@ const createUserAdmin = async userData => {
   }
 };
 
+const getUserById = async id => {
+  try {
+    logger.info(`users-service::getUserById::id::${id}`);
+    const result = await User.findOne({ where: { id } });
+    return result;
+  } catch (error) {
+    logger.error(`users-service::getUserById::error::${error.message}`);
+    throw errors.databaseError('Error getting user by id into DB');
+  }
+};
+
 module.exports = {
   createUser,
   getUserByEmail,
   getUsers,
-  createUserAdmin
+  createUserAdmin,
+  getUserById
 };

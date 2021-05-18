@@ -8,6 +8,7 @@ module.exports = {
     host: config.host,
     port: config.port,
     dialect: 'postgres',
+    timezone: 'America/Bogota',
     logging: true
   },
   testing: {
@@ -17,6 +18,7 @@ module.exports = {
     host: config.host,
     port: config.port,
     dialect: 'postgres',
+    timezone: 'America/Bogota',
     logging: false
   },
   production: {
@@ -26,6 +28,7 @@ module.exports = {
     host: config.host,
     port: config.port,
     dialect: 'postgres',
+    timezone: 'America/Bogota',
     logging: false
   }
 };
