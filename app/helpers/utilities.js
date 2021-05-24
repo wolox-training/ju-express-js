@@ -33,7 +33,7 @@ exports.compareEncryptText = async (textSentToCompare, textEncrypted) => {
 
 exports.generateToken = data => {
   try {
-    logger.info(`utilities::generateToken::data::${JSON.stringify(data)}`);
+    logger.info('utilities::generateToken');
     const token = jwt.sign(data, secret, { expiresIn: TOKEN_JWT_EXPIRES });
 
     return { token, expires: TOKEN_JWT_EXPIRES };
@@ -45,9 +45,8 @@ exports.generateToken = data => {
 
 exports.verifyToken = token => {
   try {
-    logger.info(`utilities::verifyToken::token::${token}`);
-    const tokenToVerify = token.split(' ')[1];
-    const verifyToken = jwt.verify(tokenToVerify, secret);
+    logger.info('utilities::verifyToken');
+    const verifyToken = jwt.verify(token, secret);
 
     return verifyToken;
   } catch (error) {

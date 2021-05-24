@@ -165,5 +165,35 @@ module.exports = {
         }
       }
     }
+  },
+  '/users/sessions/invalidate_all': {
+    post: {
+      tags: ['User operations'],
+      description: 'Invalidate user sessions',
+      operationId: 'invalidateSessions',
+      parameters: [],
+      responses: {
+        200: {
+          description: 'All user sessions was deleted',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/invalidatedAllSessions'
+              }
+            }
+          }
+        },
+        401: {
+          description: 'User unauthorized to create rating weet',
+          content: {
+            'application/json': {
+              schema: {
+                $ref: '#/components/schemas/unauthorizedUser'
+              }
+            }
+          }
+        }
+      }
+    }
   }
 };

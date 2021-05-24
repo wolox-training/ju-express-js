@@ -16,6 +16,7 @@ exports.init = app => {
   app.get('/health', healthCheck);
 
   app.post('/signin', signInValidator, userController.signIn);
+  app.post('/users/sessions/invalidate-all', validateToken, userController.invalidateAllSessions);
 
   app.post('/signup', signUpValidator, userController.signUp);
   app.get('/users', [usersGetAllValidator, validateToken], userController.getUsers);

@@ -34,7 +34,7 @@ module.exports = {
       },
       internal_code: {
         type: 'string',
-        example: 'conflict_error'
+        example: 'unauthorized_error'
       }
     }
   }
